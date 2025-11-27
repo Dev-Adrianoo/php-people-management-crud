@@ -29,7 +29,6 @@ header {
     color: #2c3e50;
 }
 
-/* Estilo dos Cards (Formulário e Tabela) */
 .card {
     background: white;
     padding: 25px;
@@ -141,3 +140,91 @@ th {
         flex-direction: column;
     }
 }
+
+
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    min-width: 250px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.3s forwards, fadeOut 0.5s 3s forwards;
+}
+
+.toast.success {
+    background-color: #27ae60; 
+    border-left: 5px solid #1e8449;
+}
+
+.toast.error {
+    background-color: #e74c3c; 
+    border-left: 5px solid #c0392b;
+}
+
+@keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-box {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    animation: slideIn 0.3s forwards;
+}
+
+.modal-box h3 {
+    margin-bottom: 10px;
+    color: #c0392b;
+}
+
+.modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-cancelar-modal {
+    background-color: #95a5a6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-cancelar-modal:hover { opacity: 0.9; }

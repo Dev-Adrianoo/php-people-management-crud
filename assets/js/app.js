@@ -13,6 +13,12 @@ const inputCpf = document.getElementById('cpf');
 const inputIdade = document.getElementById('idade');
 
 
+const modalConfirm = document.getElementById('modal-confirm');
+const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
+const btnCancelarExclusao = document.getElementById('btnCancelarExclusao');
+let idParaDeletar = null;
+
+
 document.addEventListener('DOMContentLoaded', () => {
     listarPessoas();
 });
@@ -34,7 +40,7 @@ async function listarPessoas() {
                 <td>${pessoa.idade}</td>
                 <td>
                     <button class="btn-editar" onclick="prepararEdicao(${pessoa.id}, '${pessoa.nome}', '${pessoa.cpf}', ${pessoa.idade})">Editar</button>
-                    <button class="btn-excluir" onclick="deletarPessoa(${pessoa.id})">Excluir</button>
+                    <button class="btn-excluir" onclick="abrirModalDelete(${pessoa.id})">Excluir</button>
                 </td>
             `;
             tabelaBody.appendChild(tr)
@@ -45,7 +51,6 @@ async function listarPessoas() {
     }
 }
 
-//Função para criar usuarios
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -75,11 +80,11 @@ form.addEventListener('submit', async (e) => {
         const json = await res.json();
 
         if(!res.ok) {
-            alert("Erro: " + json.message);
+            showToast(json.message, 'error');
             return;
         }
 
-        alert(json.message);
+        showToast(json.message, 'success');
         limparFormulario();
         listarPessoas();
 
@@ -91,8 +96,6 @@ form.addEventListener('submit', async (e) => {
 
 
 async function deletarPessoa(id) {
-    if (!confirm("Tem certeza que deseja excluir? ")) return;
-
 
     try {
         const res = await fetch(`${API_URL}?id=${id}`, {
@@ -102,11 +105,11 @@ async function deletarPessoa(id) {
         const json = await res.json();
 
         if(!res.ok) {
-            console.error("Erro ao deletar usuario." + json.message);
+            showToast(json.message, 'error');
             return;
         }
 
-        alert(json.message)
+        showToast(json.message, 'success')
         listarPessoas()
 
 
@@ -114,6 +117,26 @@ async function deletarPessoa(id) {
         console.error("Erro ao deletar: ", error)
     }
 }
+
+
+window.abrirModalDelete = (id) => {
+    idParaDeletar = id
+    modalConfirm.style.display = "flex"
+}
+
+btnConfirmarExclusao.addEventListener('click', () => {
+    if (idParaDeletar) {
+        deletarPessoa(idParaDeletar); 
+        modalConfirm.style.display = 'none'; 
+        idParaDeletar = null; 
+    }
+});
+
+btnCancelarExclusao.addEventListener('click', () => {
+    modalConfirm.style.display = 'none';
+    idParaDeletar = null;
+});
+
 
 window.prepararEdicao = (id, nome, cpf, idade) => {
     inputId.value = id;
@@ -136,5 +159,31 @@ function limparFormulario() {
 }
 
 
-btnCancelar.addEventListener('click', limparFormulario)
+inputCpf.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, "");
 
+    if (value.length > 11) value = value.slice(0, 11);
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+    e.target.value = value;
+})
+
+
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+
+    container.appendChild(toast);
+
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3500)
+}
+
+btnCancelar.addEventListener('click', limparFormulario)
