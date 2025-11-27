@@ -17,11 +17,9 @@ try {
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Create database if not exists and use it
     $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbname`");
     $pdo->exec("USE `$dbname`");
 
-    // Create table if not exists
     $sqlTabela = "
         CREATE TABLE IF NOT EXISTS pessoas (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -35,11 +33,10 @@ try {
 
 } catch (PDOException $e) {
     http_response_code(500);
-    // Log the error for debugging, but avoid showing sensitive details to the user
     error_log("Database connection or setup error: " . $e->getMessage());
     echo json_encode([
         "message" => "Erro fatal: Não foi possível conectar ou configurar o banco de dados. Verifique as configurações.",
-        "detalhes" => $e->getMessage() // For development, showing message. In production, avoid.
+        "detalhes" => $e->getMessage() 
     ]);
     exit;
 }
