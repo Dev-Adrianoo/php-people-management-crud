@@ -7,6 +7,54 @@
     <link rel="stylesheet" href="/assets/style/style.css">
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <div class="container">
+        <header>
+            <h1>Gestão de Pessoas</h1>
+        </header>
+
+        <section class="card">
+            <h2>Cadastrar Nova Pessoa</h2>
+            <form id="formPessoa">
+                <input type="hidden" id="pessoaId"> <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" required placeholder="Ex: Adriano Souza">
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" required placeholder="000.000.000-00" maxlength="14">
+                </div>
+
+                <div class="form-group">
+                    <label for="idade">Idade:</label>
+                    <input type="number" id="idade" required placeholder="Ex: 30">
+                </div>
+
+                <div class="actions">
+                    <button type="submit" id="btnSalvar">Salvar</button>
+                    <button type="button" id="btnCancelar" style="display: none;">Cancelar Edição</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Pessoas Cadastradas</h2>
+            <table id="tabelaPessoas">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Idade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
