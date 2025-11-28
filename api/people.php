@@ -146,3 +146,5 @@ function deletePerson($pdo)
         echo json_encode(["message" => "Erro: " . $e->getMessage()]);
     }
 }
+
+$pdo = null;
