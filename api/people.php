@@ -67,6 +67,7 @@ function createPerson($pdo)
             http_response_code(201);
             echo json_encode(["message" => "Pessoa criada."]);
         }
+
     } catch (PDOException $e) {
         if ($e->errorInfo[1] === 1062) {
             http_response_code(409);
